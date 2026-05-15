@@ -394,7 +394,7 @@ def check_latest_version():
             'User-Agent': 'CursorFreeVIP-Updater'
         }
         response = requests.get(
-            "https://api.github.com/repos/hovanhoa/cursor-free-vip/releases/latest",
+            "https://api.github.com/repos/vt57299/cursor-free-vip/releases/latest",
             headers=headers,
             timeout=10
         )
@@ -443,7 +443,7 @@ def check_latest_version():
             
             # get and show changelog
             try:
-                changelog_url = "https://raw.githubusercontent.com/hovanhoa/cursor-free-vip/main/CHANGELOG.md"
+                changelog_url = "https://raw.githubusercontent.com/vt57299/cursor-free-vip/main/CHANGELOG.md"
                 changelog_response = requests.get(changelog_url, timeout=10)
                 
                 if changelog_response.status_code == 200:
