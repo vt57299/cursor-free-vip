@@ -777,7 +777,9 @@ class OAuthHandler:
                     missing.append("email")
                 if not token:
                     missing.append("token")
-                print(f"{Fore.RED}{EMOJI['ERROR']} {self.translator.get('oauth.missing_authentication_data', data=', '.join(missing)) if self.translator else f'Missing authentication data: {", ".join(missing)}'}{Style.RESET_ALL}")
+                    missing_str = ", ".join(missing)
+                    print(f"{Fore.RED}{EMOJI['ERROR']} {self.translator.get('oauth.missing_authentication_data', data=missing_str) if self.translator else f'Missing authentication data: {missing_str}'}{Style.RESET_ALL}")
+                    
                 return False, None
             
         except Exception as e:
