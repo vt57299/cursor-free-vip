@@ -1,10 +1,10 @@
-watchdog
+watchdog==6.0.0
 python-dotenv>=1.0.0
 colorama>=0.4.6
-requests
+requests==2.34.2
 psutil>=5.8.0
 pywin32; platform_system == "Windows"
-pyinstaller 
+pyinstaller==6.20.0
 DrissionPage>=4.0.0
-selenium
-webdriver_manager
+selenium==4.44.0
+webdriver_manager==4.0.2
