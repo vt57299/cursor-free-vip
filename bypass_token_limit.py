@@ -139,10 +139,10 @@ def modify_workbench_js(file_path: str, translator=None) -> bool:
 
             patterns = {
                 # 通用按钮替换模式
-                r'B(k,D(Ln,{title:"Upgrade to Pro",size:"small",get codicon(){return A.rocket},get onClick(){return t.pay}}),null)': r'B(k,D(Ln,{title:"vt57299 GitHub",size:"small",get codicon(){return A.github},get onClick(){return function(){window.open("https://github.com/vt57299/cursor-free-vip","_blank")}}}),null)',
+                r'B(k,D(Ln,{title:"Upgrade to Pro",size:"small",get codicon(){return A.rocket},get onClick(){return t.pay}}),null)': r'B(k,D(Ln,{title:"hovanhoa GitHub",size:"small",get codicon(){return A.github},get onClick(){return function(){window.open("https://github.com/hovanhoa/cursor-free-vip","_blank")}}}),null)',
                 
                 # Windows/Linux/Mac 通用按钮替换模式
-                r'M(x,I(as,{title:"Upgrade to Pro",size:"small",get codicon(){return $.rocket},get onClick(){return t.pay}}),null)': r'M(x,I(as,{title:"vt57299 GitHub",size:"small",get codicon(){return $.rocket},get onClick(){return function(){window.open("https://github.com/vt57299/cursor-free-vip","_blank")}}}),null)',
+                r'M(x,I(as,{title:"Upgrade to Pro",size:"small",get codicon(){return $.rocket},get onClick(){return t.pay}}),null)': r'M(x,I(as,{title:"hovanhoa GitHub",size:"small",get codicon(){return $.rocket},get onClick(){return function(){window.open("https://github.com/hovanhoa/cursor-free-vip","_blank")}}}),null)',
                 
                 # Badge 替换
                 r'<div>Pro Trial': r'<div>Pro',
