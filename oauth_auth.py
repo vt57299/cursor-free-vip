@@ -151,7 +151,8 @@ class OAuthHandler:
                         dest_profile = os.path.join(temp_dir, 'Default')
                         shutil.copytree(orig_profile, dest_profile)
                         user_data_dir_to_use = temp_dir
-                        profile_to_use = 'Default'
+                        # Do not pass --profile-directory when using a fresh temp user-data-dir
+                        profile_to_use = None
                         self._temp_user_data_dir = temp_dir
                         print(f"{Fore.CYAN}{EMOJI['INFO']} Using temporary profile copy: {user_data_dir_to_use}{Style.RESET_ALL}")
             except Exception as e:
@@ -286,7 +287,8 @@ class OAuthHandler:
         try:
             co = ChromiumOptions()
             co.set_paths(browser_path=chrome_path, user_data_path=user_data_dir)
-            co.set_argument(f'--profile-directory={active_profile}')
+            if active_profile:
+                co.set_argument(f'--profile-directory={active_profile}')
             
             # Basic options
             co.set_argument('--no-first-run')
