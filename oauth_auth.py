@@ -163,7 +163,7 @@ class OAuthHandler:
             if os.name == 'nt':  # Windows
                 processes = ['chrome.exe', 'chromium.exe']
                 for proc in processes:
-                    os.system(f'taskkill /f /im {proc} >nul 2>&1')
+                    os.system(f'taskkill /F /IM {proc} /T >nul 2>&1')
             else:  # Linux/Mac
                 processes = ['chrome', 'chromium', 'chromium-browser']
                 for proc in processes:
