@@ -5,6 +5,8 @@ import random
 import webbrowser
 import sys
 import json
+import tempfile
+import shutil
 from DrissionPage import ChromiumPage, ChromiumOptions
 from cursor_auth import CursorAuth
 from utils import get_random_wait_time, get_default_chrome_path
@@ -33,6 +35,7 @@ class OAuthHandler:
         os.environ['BROWSER_HEADLESS'] = 'False'
         self.browser = None
         self.selected_profile = None
+        self._temp_user_data_dir = None
         
     def _get_available_profiles(self, user_data_dir):
         """Get list of available Chrome profiles with their names"""
@@ -133,9 +136,29 @@ class OAuthHandler:
             if not self._select_profile():
                 print(f"{Fore.YELLOW}{EMOJI['INFO']} {self.translator.get('menu.operation_cancelled_by_user') if self.translator else 'Operation cancelled by user'}{Style.RESET_ALL}")
                 return False
-            
-            # Configure browser options
-            co = self._configure_browser_options(chrome_path, user_data_dir, self.selected_profile)
+
+            # On Windows, launching Chrome with an existing user-data-dir often attaches to
+            # the already-running Chrome process (ignoring remote-debugging flags). To
+            # avoid that, copy the selected profile into a temporary user-data directory
+            # and use it for this OAuth flow so Chrome is launched as a fresh instance.
+            user_data_dir_to_use = user_data_dir
+            profile_to_use = self.selected_profile
+            try:
+                if os.name == 'nt' and self.selected_profile:
+                    orig_profile = os.path.join(user_data_dir, self.selected_profile)
+                    if os.path.exists(orig_profile):
+                        temp_dir = tempfile.mkdtemp(prefix='cursor_profile_')
+                        dest_profile = os.path.join(temp_dir, 'Default')
+                        shutil.copytree(orig_profile, dest_profile)
+                        user_data_dir_to_use = temp_dir
+                        profile_to_use = 'Default'
+                        self._temp_user_data_dir = temp_dir
+                        print(f"{Fore.CYAN}{EMOJI['INFO']} Using temporary profile copy: {user_data_dir_to_use}{Style.RESET_ALL}")
+            except Exception as e:
+                print(f"{Fore.YELLOW}{EMOJI['WARNING']} Failed to copy profile, falling back to original profile: {e}{Style.RESET_ALL}")
+
+            # Configure browser options (may use temporary profile)
+            co = self._configure_browser_options(chrome_path, user_data_dir_to_use, profile_to_use)
             
             print(f"{Fore.CYAN}{EMOJI['INFO']} {self.translator.get('oauth.starting_browser', path=chrome_path) if self.translator else f'Starting browser at: {chrome_path}'}{Style.RESET_ALL}")
             self.browser = ChromiumPage(co)
@@ -358,6 +381,20 @@ class OAuthHandler:
                 try:
                     if self.browser:
                         self.browser.quit()
+                except:
+                    pass
+                # Clean up any temporary user-data directory we created
+                try:
+                    if getattr(self, '_temp_user_data_dir', None):
+                        shutil.rmtree(self._temp_user_data_dir, ignore_errors=True)
+                        self._temp_user_data_dir = None
+                except:
+                    pass
+                # Clean up any temporary user-data directory we created
+                try:
+                    if getattr(self, '_temp_user_data_dir', None):
+                        shutil.rmtree(self._temp_user_data_dir, ignore_errors=True)
+                        self._temp_user_data_dir = None
                 except:
                     pass
             
