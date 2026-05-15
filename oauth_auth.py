@@ -272,6 +272,8 @@ class OAuthHandler:
             
             # Platform-specific options
             if sys.platform.startswith('linux'):
+                if not os.environ.get('DISPLAY'):
+                    co.set_argument('--headless=new')
                 co.set_argument('--no-sandbox')
                 co.set_argument('--disable-dev-shm-usage')
                 co.set_argument('--disable-setuid-sandbox')
@@ -280,7 +282,9 @@ class OAuthHandler:
             elif os.name == 'nt':
                 co.set_argument('--disable-features=TranslateUI')
                 co.set_argument('--disable-features=RendererCodeIntegrity')
-            
+
+            # Ensure a valid remote debugging port is assigned
+            co.auto_port()
             return co
             
         except Exception as e:
