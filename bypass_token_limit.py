@@ -64,9 +64,47 @@ def get_workbench_cursor_path(translator=None) -> str:
             print(f"{Fore.CYAN}{EMOJI['INFO']} Checking path: {main_path}{Style.RESET_ALL}")
             if os.path.exists(main_path):
                 return main_path
-
     if system == "Windows":
-        base_path = config.get('WindowsPaths', 'cursor_path')
+        # Try common install locations on Windows before falling back to config
+        candidates = []
+        pf = os.environ.get('ProgramFiles')
+        if pf:
+            candidates.append(os.path.join(pf, 'Cursor', 'resources', 'app'))
+            candidates.append(os.path.join(pf, 'cursor', 'resources', 'app'))
+        pf_x86 = os.environ.get('ProgramFiles(x86)')
+        if pf_x86:
+            candidates.append(os.path.join(pf_x86, 'Cursor', 'resources', 'app'))
+        # Common LocalAppData install location
+        try:
+            local_app = os.path.expandvars(r'%LOCALAPPDATA%\\Programs\\Cursor\\resources\\app')
+            candidates.append(local_app)
+        except Exception:
+            pass
+
+        # If config provides a Windows path, try it first
+        try:
+            if config.has_section('WindowsPaths') and config.has_option('WindowsPaths', 'cursor_path'):
+                cfg_path = config.get('WindowsPaths', 'cursor_path')
+                if cfg_path:
+                    candidates.insert(0, cfg_path)
+        except Exception:
+            pass
+
+        # Deduplicate and check each candidate
+        seen = set()
+        for base in candidates:
+            if not base or base in seen:
+                continue
+            seen.add(base)
+            main_path = os.path.join(base, paths_map['Windows']['main'])
+            print(f"{Fore.CYAN}{EMOJI['INFO']} Checking path: {main_path}{Style.RESET_ALL}")
+            if os.path.exists(main_path):
+                return main_path
+        # Fall back to config.get if nothing found (preserves previous behavior)
+        try:
+            base_path = config.get('WindowsPaths', 'cursor_path')
+        except Exception:
+            base_path = candidates[0] if candidates else None
     elif system == "Darwin":
         base_path = paths_map[system]["base"]
     else:  # Linux
