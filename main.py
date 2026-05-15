@@ -278,7 +278,7 @@ def print_menu():
         3: f"{Fore.GREEN}3{Style.RESET_ALL}. {EMOJI['SUN']} {translator.get('menu.register_google')} {EMOJI['ROCKET']} ({Fore.YELLOW}{translator.get('menu.lifetime_access_enabled')}{Style.RESET_ALL})",
         4: f"{Fore.GREEN}4{Style.RESET_ALL}. {EMOJI['STAR']} {translator.get('menu.register_github')} {EMOJI['ROCKET']} ({Fore.YELLOW}{translator.get('menu.lifetime_access_enabled')}{Style.RESET_ALL})",
         5: f"{Fore.GREEN}5{Style.RESET_ALL}. {EMOJI['SUCCESS']} {translator.get('menu.register_manual')}",
-        6: f"{Fore.GREEN}6{Style.RESET_ALL}. {EMOJI['RESET']} {translator.get('menu.temp_github_register')}",
+        6: f"{Fore.GREEN}6{Style.RESET_ALL}. {EMOJI['RESET']} {translator.get('menu.temp_email_register')}",
         7: f"{Fore.GREEN}7{Style.RESET_ALL}. {EMOJI['ERROR']} {translator.get('menu.quit')}",
         8: f"{Fore.GREEN}8{Style.RESET_ALL}. {EMOJI['LANG']} {translator.get('menu.select_language')}",
         9: f"{Fore.GREEN}9{Style.RESET_ALL}. {EMOJI['UPDATE']} {translator.get('menu.disable_auto_update')}",
@@ -590,9 +590,8 @@ def main():
                 cursor_register_manual.main(translator)
                 print_menu()
             elif choice == "6":
-                import github_cursor_register
-                print(f"{Fore.YELLOW}{EMOJI['INFO']} {translator.get('menu.coming_soon')}{Style.RESET_ALL}")
-                # github_cursor_register.main(translator)
+                import new_tempemail
+                new_tempemail.main(translator)
                 print_menu()
             elif choice == "7":
                 import quit_cursor

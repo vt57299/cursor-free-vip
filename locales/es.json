@@ -19,6 +19,7 @@
         "totally_reset": "Restablecer Cursor Completamente",
         "outdate": "Desactualizado",
         "temp_github_register": "Registro Temporal de GitHub",
+        "temp_email_register": "Registro temporal de correo electrónico",
         "admin_required": "Ejecutando como ejecutable, se requieren privilegios de administrador.",
         "admin_required_continue": "Continuando sin privilegios de administrador.",
         "coming_soon": "Próximamente",
